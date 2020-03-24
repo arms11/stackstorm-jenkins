@@ -10,9 +10,10 @@ class BuildProject(action.JenkinsBaseAction):
             params_list = self.parse_data(parameters)
             # Initiate job for each failing series (Server Name + Service Name)
             for params in params_list:
-                job_params = { str(k):str(v) for k,v in params.items() }
-                queue_num = self.jenkins.build_job(project, job_params)
-                print('Remediation job {NUM} was queued for {SERVICE}'.format(NUM=queue_num, SERVICE=parameters['Service_Name']))
+                job_params = { unicode(k):unicode(v) for k,v in params.items() }
+                print(job_params)
+                queue_num = self.jenkins.build_job(name=project, parameters=job_params, token='11b2fb5a621406e557853c8b4d116e7bfa')
+                print('Remediation job {NUM} was queued for {SERVICE}'.format(NUM=queue_num, SERVICE=params['Service_Name']))
             return (True, "Success")
         else: 
             return (False, "Alert data was not provided.")
